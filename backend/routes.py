@@ -47,7 +47,7 @@ def get_picture_by_id(id):
     for pic in data:
         if pic['id']==id:
             return jsonify(pic)
-    return {"message":"not found"},404
+    return {"message":"picture not found"},404
 
 
 ######################################################################
@@ -60,7 +60,7 @@ def create_picture():
        # return {"message": "Invalid input parameter"}, 422
     for pic in data:
         if pic['id']==new_pic['id']:
-            print(pic)
+            print(new_pic)
             return {"Message": f"picture with id {new_pic['id']} already present"},302
     data.append(new_pic)
     print(new_pic)
@@ -74,10 +74,10 @@ def create_picture():
 @app.route("/picture/<int:id>", methods=["PUT"])
 def update_picture(id):
     new_pic = request.json
-    for pic in data:
-        if pic['id']==id:
-            pic.update(new_pic)
-            return jsonify(new_pic), 200
+    for index, picture in enumerate(data):
+        if picture["id"] == id:
+            data[index] = new_pic
+            return picture, 201
     return {"message": "picture not found"},404
 
 ######################################################################
@@ -88,5 +88,5 @@ def delete_picture(id):
     for pic in data:
         if pic['id']==id:
             data.remove(pic)
-            return jsonify(data), 204
+            return  "",204
     return {"message": "picture not found"},404
